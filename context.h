@@ -13,7 +13,7 @@ class TObjectInContext
     std::shared_ptr<typename T::TImpl> Context;
 public:
     TObjectInContext(const T& context)
-        : Context(context.Impl)
+        : Context(context.GetImpl())
     {
     }
 
@@ -35,10 +35,14 @@ public:
     ~TContext();
     TObject CreateObject();
 
-private:
     class TImpl;
+    inline const std::shared_ptr<TImpl>& GetImpl() const
+    {
+        return Impl;
+    }
+
+private:
     std::shared_ptr<TImpl> Impl;
-    friend class TObjectInContext<TContext>;
 };
 
 #endif
