@@ -1,11 +1,15 @@
-#include "context.h"
+#include <iostream>
+#include "context.hpp"
+#include "object.hpp"
 
 int main()
 {
-    TObject object = TContext().CreateObject();
+    TObject object = *TContext().CreateObject();
     {
         TContext context;
-        object = context.CreateObject();
+        std::cout << "another context created" << std::endl;
+        object = *context.CreateObject();
+        std::cout << "leaving scope" << std::endl;
     }
     std::cout << "very last line" << std::endl;
 }

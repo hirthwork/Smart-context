@@ -1,16 +1,17 @@
 #include <iostream>
+#include <memory>
 
-#include "context.h"
+#include "context.hpp"
+#include "object.hpp"
 
-class TContext::TImpl
+struct TContext::TImpl : std::enable_shared_from_this<TContext::TImpl>
 {
-public:
-    TImpl()
+    inline TImpl()
     {
         std::cout << "TImpl::TImpl" << std::endl;
     }
 
-    ~TImpl()
+    inline ~TImpl()
     {
         std::cout << "TImpl::~TImpl" << std::endl;
     }
@@ -21,12 +22,8 @@ TContext::TContext()
 {
 }
 
-TContext::~TContext()
+std::unique_ptr<TObject> TContext::CreateObject()
 {
-}
-
-TObject TContext::CreateObject()
-{
-    return TObject(*this);
+    return std::unique_ptr<TObject>(new TObject(Impl->shared_from_this()));
 }
 
